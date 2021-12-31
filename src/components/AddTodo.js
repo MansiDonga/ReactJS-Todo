@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Counter } from '../features/counter/Counter';
 
 export const AddTodo = (props) => {
     const [task, setTask] = useState("");
@@ -43,6 +44,9 @@ export const AddTodo = (props) => {
                 </div>
                 <button type="submit" className="btn btn-sm btn-primary">Add Todo</button>
             </form>
+            <div className='mt-3'>
+                <Counter></Counter>
+            </div>
         </div>
     )
 }
