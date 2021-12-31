@@ -2,7 +2,8 @@ import './App.css';
 import Header from './components/Header';
 import { Todos } from './components/Todos';
 import { Footer } from './components/Footer';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+// import { useState } from 'react';
 import { AddTodo } from './components/AddTodo';
 import {
   BrowserRouter as Router,
@@ -10,21 +11,29 @@ import {
   Route
 } from "react-router-dom";
 import { About } from './components/About';
+import { useSelector, useDispatch } from 'react-redux';
+import { setTodos } from './features/todo/todoSlice';
 
 function App() {
-  let initTodos;
-  if (localStorage.getItem("todos") === null) {
-    initTodos = [];
-  }
-  else {
-    initTodos = JSON.parse(localStorage.getItem("todos"));
-  }
+  // let initTodos;
+  // if (localStorage.getItem("todos") === null) {
+  //   initTodos = [];
+  // }
+  // else {
+  //   initTodos = JSON.parse(localStorage.getItem("todos"));
+  // }
+
+  const todos = useSelector((state) => state.addTodo.todos);
+  const dispatch = useDispatch();
 
   const onDelete = (todo) => {
     console.log("Deleted Todo!: ", todo);
-    setTodos(todos.filter((item) => {
+    dispatch(setTodos(todos.filter((item) => {
       return item !== todo;
-    }));
+    })));
+    // setTodos(todos.filter((item) => {
+    //   return item !== todo;
+    // }));
     localStorage.setItem("todos", JSON.stringify(todos));
   };
 
@@ -42,11 +51,12 @@ function App() {
       task: task,
       description: description
     }
-    setTodos([...todos, newTodo]);
+    dispatch(setTodos([...todos, newTodo]));
+    // setTodos([...todos, newTodo]);
     console.log("Added: ", newTodo);
   }
 
-  const [todos, setTodos] = useState(initTodos);
+  // const [todos, setTodos] = useState(initTodos);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
