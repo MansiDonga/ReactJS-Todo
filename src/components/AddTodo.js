@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Counter } from '../features/counter/Counter';
+import { useSelector, useDispatch } from 'react-redux';
+import { setTaskValue, setDescriptionValue } from '../features/todo/todoSlice';
 
 export const AddTodo = (props) => {
-    const [task, setTask] = useState("");
-    const [description, setDescription] = useState("");
+    // const [task, setTask] = useState("");
+    // const [description, setDescription] = useState("");
+    const task = useSelector((state)=> state.addTodo.task);
+    const description = useSelector((state)=> state.addTodo.description);
+    const dispatch = useDispatch();
 
     const submit = (e) => {
         e.preventDefault();
@@ -12,8 +17,8 @@ export const AddTodo = (props) => {
         }
         else {
             props.addTodo(task, description);
-            setTask("");
-            setDescription("");
+            dispatch(setTaskValue(task));
+            dispatch(setDescriptionValue(description));
         }
     };
 
@@ -27,7 +32,7 @@ export const AddTodo = (props) => {
                         type="text"
                         value={task}
                         className="form-control"
-                        onChange={(e) => { setTask(e.target.value) }}
+                        onChange={(e) => dispatch(setTaskValue(e.target.value))}
                         id="task"
                         aria-describedby="taskHelp"
                     />
@@ -39,7 +44,7 @@ export const AddTodo = (props) => {
                         value={description}
                         className="form-control"
                         id="description"
-                        onChange={(e) => { setDescription(e.target.value) }}
+                        onChange={(e) => dispatch(setDescriptionValue(e.target.value))}
                     />
                 </div>
                 <button type="submit" className="btn btn-sm btn-primary">Add Todo</button>
